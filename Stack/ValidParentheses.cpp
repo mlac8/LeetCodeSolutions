@@ -1,25 +1,28 @@
 //
-// Created by Mark Lacanilao on 8/8/25.
-class Solution {
+// Created by Mark Lacanilao on 8/8/25.class Solution {
 public:
-    bool isValid(string s) {
-        while (true) {
-            size_t pos = string::npos;
-            if ((pos = s.find("()")) != string::npos) {
-                s.erase(pos, 2);
-                continue;
+    bool isValid(string s) { // stack and hashmp needed!
+        std::stack<char> stack;
+        std::unordered_map<char, char> closeToOpen = {
+            {')', '('},
+            {']', '['},
+            {'}', '{'}
+        };
+
+        for (char c : s) {
+            if (closeToOpen.count(c)) {
+                if (!stack.empty() && stack.top() == closeToOpen[c]) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            } else {
+                stack.push(c);
             }
-            if ((pos = s.find("{}")) != string::npos) {
-                s.erase(pos, 2);
-                continue;
-            }
-            if ((pos = s.find("[]")) != string::npos) {
-                s.erase(pos, 2);
-                continue;
-            }
-            break;
         }
-        return s.empty();
+        return stack.empty();
     }
+    // time: O(n)
+    // space: O(n)
 };
 //
